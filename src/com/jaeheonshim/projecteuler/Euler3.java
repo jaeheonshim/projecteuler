@@ -17,12 +17,12 @@ public class Euler3 {
         System.out.println(largestFactor);
     }
 
-    public static boolean isPrime(long number) {
-        for (int i = 2; i <= Math.sqrt(number); i++) {
-            if (number % i == 0) {
-                return false;
-            }
+public static boolean isPrime(long number) {
+    for (int i = 2; i <= Math.sqrt(number); i++) {
+        if (number % i == 0) {
+            return false;
         }
-        return true;
     }
+    return true;
+}
 }
