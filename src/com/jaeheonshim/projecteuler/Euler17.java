@@ -6,7 +6,6 @@ public class Euler17 {
     public static void main(String[] args) {
         int count = 0;
         for(int i = 1; i <= 1000; i++) {
-            System.out.println(numberToString(i));
             count += numberToString(i).replace(" ", "").split("").length;
         }
 
@@ -52,44 +51,54 @@ public class Euler17 {
     };
 
     public static String numberToString(int number) {
-        String output = "";
-
         if(number < 10) {
-            output = ones[number];
+            return ones[number];
         } else if(number == 10) {
-            output = "ten";
-        } else if(number > 10 && number < 20) {
-            output = special[number - 11];
-        } else if(number >= 20 && number < 100) {
-            String[] numberString = Integer.toString(number).split("");
-            StringJoiner numberJoiner = new StringJoiner(" ");
-
-            numberJoiner.add(tens[Integer.parseInt(numberString[0])]);
-            numberJoiner.add(ones[Integer.parseInt(numberString[1])]);
-
-            output = numberJoiner.toString();
-        } else if(number >= 100 && number < 1000) {
+            return "ten";
+        } else if(number < 20) {
+            return calculateSpecialNumbers(number);
+        } else if(number < 100) {
+            return calculateTwoDigit(number);
+        } else if(number < 1000) {
             String[] numberString = Integer.toString(number).split("");
             StringJoiner numberJoiner = new StringJoiner(" ");
 
             numberJoiner.add(ones[Integer.parseInt(numberString[0])]);
+
             numberJoiner.add("hundred");
             if(Integer.parseInt(numberString[1]) != 0 || Integer.parseInt(numberString[2]) != 0) {
                 numberJoiner.add("and");
-                if(Integer.parseInt(numberString[1] + numberString[2]) > 10 && Integer.parseInt(numberString[1] + numberString[2]) < 20) {
-                    numberJoiner.add(special[Integer.parseInt(numberString[1] + numberString[2]) - 11]);
+                String lastTwo = numberString[1] + numberString[2];
+
+                if(Integer.parseInt(lastTwo) > 10 && Integer.parseInt(lastTwo) < 20) {
+                    numberJoiner.add(calculateSpecialNumbers(Integer.parseInt(lastTwo)));
                 } else {
-                    numberJoiner.add(tens[Integer.parseInt(numberString[1])]);
-                    numberJoiner.add(ones[Integer.parseInt(numberString[2])]);
+                    numberJoiner.add(calculateTwoDigit(Integer.parseInt(lastTwo)));
                 }
-                output = numberJoiner.toString();
-            } else {
-                output = numberJoiner.toString();
             }
+            return numberJoiner.toString();
         } else if(number == 1000) {
-            output = "one thousand";
+            return "one thousand";
+        } else {
+            return null;
+        }
+    }
+
+    public static String calculateSpecialNumbers(int number) {
+        return special[number - 11];
+    }
+
+    public static String calculateTwoDigit(int number) {
+        String[] numberString = Integer.toString(number).split("");
+        StringJoiner numberJoiner = new StringJoiner(" ");
+
+        if(numberString.length > 1) {
+            numberJoiner.add(tens[Integer.parseInt(numberString[0])]);
+            numberJoiner.add(ones[Integer.parseInt(numberString[1])]);
+        } else {
+            numberJoiner.add(ones[Integer.parseInt(numberString[0])]);
         }
 
-        return output;
+        return numberJoiner.toString();
     }
 }
